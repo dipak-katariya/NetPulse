@@ -1,0 +1,44 @@
+<Project>
+
+  <!--
+    Optional Authenticode signing of the published EXE.
+    Activates when NETPULSE_SIGN_PFX (path to PFX) is set in the build environment.
+
+    Required env vars:
+      NETPULSE_SIGN_PFX           - absolute path to .pfx
+      NETPULSE_SIGN_PFX_PASSWORD  - PFX password (optional if PFX has no password)
+    Optional env vars:
+      NETPULSE_SIGN_TIMESTAMP_URL - RFC 3161 timestamp URL, defaults to DigiCert
+      NETPULSE_SIGN_TOOL_PATH     - signtool.exe override (otherwise PATH search)
+      NETPULSE_SIGN_DESCRIPTION   - signed description, defaults to "NetPulse"
+
+    No external tools or NuGet packages are pulled - this uses the Windows SDK signtool
+    that ships with Visual Studio / the Windows 10/11 SDK.
+  -->
+
+  <Target Name="NetPulseSignPublishedExe" AfterTargets="Publish"
+          Condition="'$(NETPULSE_SIGN_PFX)' != '' AND Exists('$(NETPULSE_SIGN_PFX)')">
+
+    <PropertyGroup>
+      <_SignToolPath Condition="'$(NETPULSE_SIGN_TOOL_PATH)' != ''">$(NETPULSE_SIGN_TOOL_PATH)</_SignToolPath>
+      <_SignToolPath Condition="'$(_SignToolPath)' == ''">signtool.exe</_SignToolPath>
+      <_TimestampUrl Condition="'$(NETPULSE_SIGN_TIMESTAMP_URL)' != ''">$(NETPULSE_SIGN_TIMESTAMP_URL)</_TimestampUrl>
+      <_TimestampUrl Condition="'$(_TimestampUrl)' == ''">http://timestamp.digicert.com</_TimestampUrl>
+      <_SignDescription Condition="'$(NETPULSE_SIGN_DESCRIPTION)' != ''">$(NETPULSE_SIGN_DESCRIPTION)</_SignDescription>
+      <_SignDescription Condition="'$(_SignDescription)' == ''">NetPulse</_SignDescription>
+      <_PfxPasswordSwitch Condition="'$(NETPULSE_SIGN_PFX_PASSWORD)' != ''">/p "$(NETPULSE_SIGN_PFX_PASSWORD)"</_PfxPasswordSwitch>
+      <_PublishedExePath>$(PublishDir)$(AssemblyName).exe</_PublishedExePath>
+    </PropertyGroup>
+
+    <Message Importance="high"
+             Text="[NetPulse] Signing $(_PublishedExePath) with $(NETPULSE_SIGN_PFX)" />
+
+    <Exec Command="&quot;$(_SignToolPath)&quot; sign /fd SHA256 /td SHA256 /tr $(_TimestampUrl) /f &quot;$(NETPULSE_SIGN_PFX)&quot; $(_PfxPasswordSwitch) /d &quot;$(_SignDescription)&quot; &quot;$(_PublishedExePath)&quot;"
+          ConsoleToMsBuild="true" />
+
+    <Exec Command="&quot;$(_SignToolPath)&quot; verify /pa /v &quot;$(_PublishedExePath)&quot;"
+          ConsoleToMsBuild="true"
+          ContinueOnError="WarnAndContinue" />
+  </Target>
+
+</Project>
