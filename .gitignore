@@ -1,0 +1,13 @@
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.idea/
+.vscode/
+*.log
+publish/
+artifacts/
+*.psess
+*.vsp
+*.vspx
