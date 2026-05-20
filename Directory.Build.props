@@ -8,7 +8,11 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Company>katard</Company>
-    <Product>SpeedShow</Product>
+    <Product>NetPulse</Product>
+    <AssemblyTitle>NetPulse</AssemblyTitle>
+    <Description>NetPulse - real-time network speed widget for Windows</Description>
+    <Copyright>Copyright (c) NetPulse</Copyright>
+    <InformationalVersion>0.1.0</InformationalVersion>
     <Version>0.1.0</Version>
     <FileVersion>0.1.0.0</FileVersion>
     <AssemblyVersion>0.1.0.0</AssemblyVersion>

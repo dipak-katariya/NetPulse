@@ -30,7 +30,7 @@ public sealed class TrayIconHost : IDisposable
         _onSetAutostart = onSetAutostart;
         _getAutostartEnabled = getAutostartEnabled;
 
-        _ownedIcon = BuildFallbackIcon();
+        _ownedIcon = LoadAppIcon() ?? BuildFallbackIcon();
 
         _autostartItem = new WinForms.ToolStripMenuItem("Start with Windows")
         {
@@ -74,6 +74,21 @@ public sealed class TrayIconHost : IDisposable
     private void OnIconClick(object? sender, WinForms.MouseEventArgs e)
     {
         if (e.Button == WinForms.MouseButtons.Left) _onToggleWidget();
+    }
+
+    private static Icon? LoadAppIcon()
+    {
+        try
+        {
+            Uri uri = new("pack://application:,,,/Assets/NetPulse.ico", UriKind.Absolute);
+            System.Windows.Resources.StreamResourceInfo? info = System.Windows.Application.GetResourceStream(uri);
+            if (info?.Stream is null) return null;
+            using Stream stream = info.Stream;
+            return new Icon(stream);
+        }
+        catch (IOException) { return null; }
+        catch (ArgumentException) { return null; }
+        catch (InvalidOperationException) { return null; }
     }
 
     private static Icon BuildFallbackIcon()
