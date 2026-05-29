@@ -58,6 +58,8 @@ Grab the **latest signed EXE** for your architecture from the buttons below — 
 
 You can also browse **all releases, changelogs, and SHA-256 checksums** on the [Releases page](https://github.com/dipak-katariya/NetPulse/releases).
 
+> **Code signing.** Release builds of NetPulse are Authenticode code-signed. Free code signing is provided by [SignPath.io](https://about.signpath.io/), with a free OSS certificate issued by the [SignPath Foundation](https://signpath.org/). See the [Privacy Policy](docs/PRIVACY.md) and [Security Policy](SECURITY.md).
+
 <!-- DIRECT_DOWNLOAD:START -->
 ### Direct download from repository
 
@@ -291,7 +293,9 @@ If any of these matter to you, open an issue and say so — that is how priority
 
 ## License
 
-See [LICENSE](LICENSE) for details. If no license file is present in the repository yet, the project is provided as-is for personal use pending a formal license decision.
+NetPulse is released under the **MIT License** — see [LICENSE](LICENSE) for the full text.
+
+This project also publishes a [Code of Conduct](CODE_OF_CONDUCT.md), a [Security Policy](SECURITY.md), and a [Privacy Policy](docs/PRIVACY.md). Release builds are code-signed; free code signing is provided by [SignPath.io](https://about.signpath.io/), with a certificate issued by the [SignPath Foundation](https://signpath.org/).
 
 ---
 
